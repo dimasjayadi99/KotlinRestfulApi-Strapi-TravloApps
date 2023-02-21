@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -32,6 +34,7 @@ class HomeFragment : Fragment() {
     var selectedNumber : Int = 1
 
     lateinit var rv_horizon : RecyclerView
+    lateinit var progressbar : ProgressBar
 
     @SuppressLint("CommitTransaction")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,6 +42,11 @@ class HomeFragment : Fragment() {
 
         // recyclerview horizontal
         rv_horizon = view.findViewById(R.id.horizontal_only)
+
+
+        progressbar = view.findViewById(R.id.progressbar)
+        progressbar.visibility = View.VISIBLE
+
         // call function recommended list
         getRecommendList(view)
 
@@ -82,7 +90,10 @@ class HomeFragment : Fragment() {
                 response: Response<ResponseDestination>
             ) {
                 // Body Response
+
                 if (response.isSuccessful) {
+                    progressbar.visibility = View.GONE
+
                     val responseBody = response.body()
                     val responseList = responseBody?.data
                     val adapterRecommend = RecommendedAdapter(responseList)
@@ -93,12 +104,12 @@ class HomeFragment : Fragment() {
                         adapter = adapterRecommend
                     }
                 }else{
-                    Toast.makeText(view?.context, "Gagal ambil data", Toast.LENGTH_SHORT).show()
+                    progressbar.visibility = View.GONE
                 }
             }
 
             override fun onFailure(call: Call<ResponseDestination>, t: Throwable) {
-                Toast.makeText(view?.context, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                progressbar.visibility = View.GONE
             }
         })
     }

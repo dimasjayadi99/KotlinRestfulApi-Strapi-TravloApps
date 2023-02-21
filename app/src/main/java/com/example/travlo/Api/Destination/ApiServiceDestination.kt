@@ -20,4 +20,10 @@ interface ApiServiceDestination {
 
     @GET("destinations?populate=*&filters[category][name][\$eq]=Beach")
     fun getListBeach() : Call<ResponseDestination>
+
+    @GET("destinations?populate=*&filters[category][name][\$eq]=Forest")
+    fun getListForest() : Call<ResponseDestination>
+
+    @GET("destinations?populate=*&filters[category][name][\$eq]=Historic")
+    fun getListHistoric() : Call<ResponseDestination>
 }

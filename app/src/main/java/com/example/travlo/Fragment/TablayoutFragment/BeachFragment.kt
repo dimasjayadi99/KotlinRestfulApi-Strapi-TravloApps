@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,12 +23,21 @@ import retrofit2.Response
 class BeachFragment : Fragment() {
 
     lateinit var rv_beach : RecyclerView
+    lateinit var layout_error_message: LinearLayout
+    lateinit var progressbar: ProgressBar
+    lateinit var error_text: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = LayoutInflater.from(parentFragment?.context).inflate(R.layout.fragment_beach,container,false)
 
         rv_beach = view.findViewById(R.id.rv_beach)
+        layout_error_message = view.findViewById(R.id.layout_error_message)
+        layout_error_message.visibility = View.GONE
+        progressbar = view.findViewById(R.id.progressbar)
+        progressbar.visibility = View.VISIBLE
+        error_text = view.findViewById(R.id.error_text)
+
         getListBeach(view)
 
         return view
@@ -33,25 +45,40 @@ class BeachFragment : Fragment() {
 
     private fun getListBeach(view: View?) {
         ApiConfigDestionation.getService().getListBeach().enqueue(object : Callback<ResponseDestination>{
-            @SuppressLint("NotifyDataSetChanged")
+            @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
             override fun onResponse(call: Call<ResponseDestination>, response: Response<ResponseDestination>) {
+                progressbar.visibility = View.GONE
+
                 if (response.isSuccessful){
-                    val responseBody = response.body()
-                    val responseList = responseBody?.data
-                    val adapterBeach = ListAllAdapter(responseList)
-                    rv_beach.apply {
-                        layoutManager = LinearLayoutManager(view?.context)
-                        setHasFixedSize(true)
-                        adapterBeach.notifyDataSetChanged()
-                        adapter = adapterBeach
+                    if (response.body()?.data?.isNotEmpty() == true) {
+                        layout_error_message.visibility = View.GONE
+                        val responseBody = response.body()
+                        val responseList = responseBody?.data
+                        val adapterBeach = ListAllAdapter(responseList)
+                        rv_beach.apply {
+                            layoutManager = LinearLayoutManager(view?.context)
+                            setHasFixedSize(true)
+                            adapterBeach.notifyDataSetChanged()
+                            adapter = adapterBeach
+                        }
+                    }else{
+                        layout_error_message.visibility = View.VISIBLE
+
                     }
+
                 }else{
-                    Toast.makeText(view?.context, "Gagal mengambil data", Toast.LENGTH_SHORT).show()
+                    error_text.text = "Gagal memuat data\nterjadi kesalahan jaringan atau server"
+                    layout_error_message.visibility = View.VISIBLE
+
                 }
             }
 
+            @SuppressLint("SetTextI18n")
             override fun onFailure(call: Call<ResponseDestination>, t: Throwable) {
-                Toast.makeText(view?.context, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                error_text.text = "Gagal memuat data\nterjadi kesalahan jaringan atau server"
+                progressbar.visibility = View.GONE
+                layout_error_message.visibility = View.VISIBLE
+//                Toast.makeText(view?.context, t.localizedMessage, Toast.LENGTH_SHORT).show()
             }
 
         })

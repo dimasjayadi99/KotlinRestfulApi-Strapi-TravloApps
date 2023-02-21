@@ -1,12 +1,16 @@
 package com.example.travlo.Adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.travlo.Activity.MainActivity
 import com.example.travlo.R
 import com.example.travlo.Response.DataItem
 import com.squareup.picasso.Picasso
@@ -15,6 +19,7 @@ import java.util.Locale
 
 class ListAllAdapter (val allList : List<DataItem?>?) : RecyclerView.Adapter<ListAllAdapter.MyViewHolder>() {
     class MyViewHolder (view : View) : RecyclerView.ViewHolder(view) {
+        val cardview = view.findViewById<CardView>(R.id.cardview)
         val thumb = view.findViewById<ImageView>(R.id.thumb)
         val name = view.findViewById<TextView>(R.id.tv_name)
         val place = view.findViewById<TextView>(R.id.tv_place)
@@ -47,7 +52,25 @@ class ListAllAdapter (val allList : List<DataItem?>?) : RecyclerView.Adapter<Lis
         val numberFormat = NumberFormat.getCurrencyInstance(localID)
         holder.price.text = numberFormat.format(price)
 
-        Picasso.get().load("http://10.0.2.2:1337"+allList?.get(position)?.attributes?.thumb?.data?.attributes?.url).into(holder.thumb)
+        val thumbUrl = "http://10.0.2.2:1337" + allList?.get(position)?.attributes?.thumb?.data?.attributes?.url
+
+        Picasso.get().load(thumbUrl).into(holder.thumb)
+
+//        holder.cardview.setOnClickListener{
+//            val intent = Intent(it.context,MainActivity::class.java)
+//            intent.putExtra("id",allList?.get(position)?.id)
+//            intent.putExtra("thumb",thumbUrl)
+//            intent.putExtra("name",holder.name.text)
+//            intent.putExtra("tag",allList?.get(position)?.attributes?.tag)
+//            intent.putExtra("place", holder.place.text)
+//            intent.putExtra("rate",holder.rate.text)
+//            intent.putExtra("price",price)
+//            intent.putExtra("description",allList?.get(position)?.attributes?.description)
+//            intent.putExtra("time",allList?.get(position)?.attributes?.time)
+//            intent.putExtra("time",allList?.get(position)?.attributes?.days)
+//            intent.putExtra("facility",allList?.get(position)?.attributes?.facilities?.data?.get(position)?.attributes?.name)
+//            it.context.startActivity(intent)
+//        }
 
     }
 }
