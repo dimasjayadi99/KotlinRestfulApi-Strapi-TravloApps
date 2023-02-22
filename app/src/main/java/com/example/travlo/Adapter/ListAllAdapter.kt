@@ -8,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.travlo.Activity.DetailActivity
 import com.example.travlo.Activity.MainActivity
 import com.example.travlo.R
 import com.example.travlo.Response.DataItem
 import com.squareup.picasso.Picasso
+import java.io.Serializable
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -56,21 +59,21 @@ class ListAllAdapter (val allList : List<DataItem?>?) : RecyclerView.Adapter<Lis
 
         Picasso.get().load(thumbUrl).into(holder.thumb)
 
-//        holder.cardview.setOnClickListener{
-//            val intent = Intent(it.context,MainActivity::class.java)
-//            intent.putExtra("id",allList?.get(position)?.id)
-//            intent.putExtra("thumb",thumbUrl)
-//            intent.putExtra("name",holder.name.text)
-//            intent.putExtra("tag",allList?.get(position)?.attributes?.tag)
-//            intent.putExtra("place", holder.place.text)
-//            intent.putExtra("rate",holder.rate.text)
-//            intent.putExtra("price",price)
-//            intent.putExtra("description",allList?.get(position)?.attributes?.description)
-//            intent.putExtra("time",allList?.get(position)?.attributes?.time)
-//            intent.putExtra("time",allList?.get(position)?.attributes?.days)
-//            intent.putExtra("facility",allList?.get(position)?.attributes?.facilities?.data?.get(position)?.attributes?.name)
-//            it.context.startActivity(intent)
-//        }
+        holder.cardview.setOnClickListener{
+            val intent = Intent(it.context,DetailActivity::class.java)
+            intent.putExtra("id",allList?.get(position)?.id)
+            intent.putExtra("thumb",thumbUrl)
+            intent.putExtra("name",holder.name.text)
+            intent.putExtra("tag",allList?.get(position)?.attributes?.tag)
+            intent.putExtra("place", holder.place.text)
+            intent.putExtra("rate",holder.rate.text)
+            intent.putExtra("price",price)
+            intent.putExtra("description",allList?.get(position)?.attributes?.description)
+            intent.putExtra("time",allList?.get(position)?.attributes?.time)
+            intent.putExtra("days",allList?.get(position)?.attributes?.days)
+//            intent.putExtra("facility",allList?.get(position)?.attributes?.facilities?.data?.get(position)?.attributes?.name.toString() as Serializable)
+            it.context.startActivity(intent)
+        }
 
     }
 }
