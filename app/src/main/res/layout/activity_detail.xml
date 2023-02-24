@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp"
+    android:paddingBottom="20dp"
     android:orientation="vertical"
     android:scrollbars="none"
     tools:context=".Activity.DetailActivity"
@@ -53,6 +53,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
+        <RatingBar
+            android:progressTint="#FFDF00"
+            style="?android:attr/ratingBarStyleSmall"
+            android:id="@+id/rb_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:numStars="5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tag" />
+
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
@@ -64,7 +76,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tag" />
+            app:layout_constraintTop_toBottomOf="@+id/rb_rate" />
 
         <TextView
             android:id="@+id/textView9"
@@ -83,9 +95,9 @@
             android:layout_width="411dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:justificationMode="inter_word"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -130,6 +142,7 @@
             tools:orientation="horizontal"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:paddingStart="16dp"
+            android:background="@android:color/white"
             tools:itemCount="4"
             tools:listitem="@layout/list_facility"
             android:layout_width="match_parent"
