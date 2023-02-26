@@ -2,11 +2,10 @@ package com.example.travlo.Adapter
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -14,9 +13,6 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travlo.Activity.DetailActivity
 import com.example.travlo.R
-import com.example.travlo.Request.Destination
-import com.example.travlo.Response.Attributes
-import com.example.travlo.Response.Data
 import com.example.travlo.Response.DataItem
 import com.squareup.picasso.Picasso
 import java.text.NumberFormat
@@ -25,13 +21,13 @@ import java.util.*
 
 class ListAllAdapter(val allList: List<DataItem?>?) :
     RecyclerView.Adapter<ListAllAdapter.MyViewHolder>() {
+
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val cardview = view.findViewById<CardView>(R.id.cardview)
         val thumb = view.findViewById<ImageView>(R.id.thumb)
         val name = view.findViewById<TextView>(R.id.tv_name)
         val place = view.findViewById<TextView>(R.id.tv_place)
         val rb_rate = view.findViewById<RatingBar>(R.id.rb_rate)
-//        val rate = view.findViewById<TextView>(R.id.tv_rate)
         val price = view.findViewById<TextView>(R.id.tv_price)
     }
 
@@ -59,7 +55,7 @@ class ListAllAdapter(val allList: List<DataItem?>?) :
 
         // formating number price
         val price = allList?.get(position)?.attributes?.price?.toInt()
-        val localID = Locale("in","ID")
+        val localID = Locale("in", "ID")
         val numberFormat = NumberFormat.getCurrencyInstance(localID)
         holder.price.text = numberFormat.format(price)
 
@@ -69,7 +65,7 @@ class ListAllAdapter(val allList: List<DataItem?>?) :
 
         val strFacilites = ArrayList<String>()
 
-        for (i in allList?.get(position)?.attributes?.facilities?.data?.indices!!){
+        for (i in allList?.get(position)?.attributes?.facilities?.data?.indices!!) {
             allList[position]?.attributes?.facilities?.data!![i]?.attributes?.name?.let {
                 strFacilites.add(
                     it
@@ -77,21 +73,35 @@ class ListAllAdapter(val allList: List<DataItem?>?) :
             }
         }
 
-        holder.cardview.setOnClickListener{
-            val intent = Intent(it.context,DetailActivity::class.java)
-            intent.putExtra("id",allList?.get(position)?.id)
-            intent.putExtra("thumb",thumbUrl)
-            intent.putExtra("name",holder.name.text)
-            intent.putExtra("tag",allList?.get(position)?.attributes?.tag)
+        holder.cardview.setOnClickListener {
+            val intent = Intent(it.context, DetailActivity::class.java)
+            intent.putExtra("id", allList?.get(position)?.id)
+            intent.putExtra("thumb", thumbUrl)
+            intent.putExtra("name", holder.name.text)
+            intent.putExtra("tag", allList?.get(position)?.attributes?.tag)
             intent.putExtra("place", holder.place.text)
-            intent.putExtra("rate",allList?.get(position)?.attributes?.rate)
-            intent.putExtra("price",price)
-            intent.putExtra("description",allList?.get(position)?.attributes?.description)
-            intent.putExtra("time",allList?.get(position)?.attributes?.time)
-            intent.putExtra("days",allList?.get(position)?.attributes?.days)
-            intent.putExtra("facility",strFacilites)
+            intent.putExtra("rate", allList?.get(position)?.attributes?.rate)
+            intent.putExtra("price", price)
+            intent.putExtra("description", allList?.get(position)?.attributes?.description)
+            intent.putExtra("time", allList?.get(position)?.attributes?.time)
+            intent.putExtra("days", allList?.get(position)?.attributes?.days)
+            intent.putExtra("facility", strFacilites)
             it.context.startActivity(intent)
         }
 
     }
+//
+//    fun getFilter() : Filter = object : Filter(){
+//        override fun performFiltering(p0: CharSequence?): FilterResults {
+//            val filteredList: MutableList<DataItem> = ArrayList()
+//            if(p0 == null || p0.isEmpty()){
+//                filteredList.addAll(allList)
+//            }
+//        }
+//
+//        override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+//        }
+//    }
+
+
 }

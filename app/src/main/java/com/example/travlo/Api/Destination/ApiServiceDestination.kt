@@ -26,4 +26,10 @@ interface ApiServiceDestination {
 
     @GET("destinations?populate=*&filters[category][name][\$eq]=Historic")
     fun getListHistoric() : Call<ResponseDestination>
+
+    @GET("destinations?populate=*&")
+    fun getSearchList(@Query("filters[name][\$containsi]=name") name : String) : Call<ResponseDestination>
+
+
+
 }
